@@ -1,0 +1,30 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo -e "
+Please select your ${RED}target directory${NC}:"
+
+select d in */
+do test -n "$d" && break
+echo ">>> Invalid Selection"
+done
+
+echo -e "
+Please select your ${RED}destination directory${NC}:"
+
+select b in /home/caprinux/Desktop/CTF/*/
+do test -n "$b" && break
+echo ">>> Invalid Selection"
+done
+
+select dire in $b*/
+do test -n "$dire" && break
+echo ">>> Invalid Selection"
+done
+
+echo -e "
+Pushing ${RED}$d${NC} into ${RED}$dire${NC}..."
+
+mv "$d" "$dire"

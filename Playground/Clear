@@ -1,0 +1,11 @@
+#!/bin/bash
+
+shopt -s extglob
+
+
+if [[ $1 == "-d" ]]; then
+	rm -r -v !("Clear"|"Push"|"Pull") # process option h
+	exit
+fi
+rm -v !("Clear"|"Push"|"Pull") # process option t
+

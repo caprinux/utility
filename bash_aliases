@@ -1,6 +1,7 @@
 
 # aliases
 alias lslibs='ls ~/Tools/libc-database/libs/'
+alias tt='xdg-open ~/Pictures/Timetable.png'
 alias fzf="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
 alias fzfs=$'rg . | fzf --print0 -e | awk -F: \'{print $1}\''
 alias bashrc="source ~/.bashrc"
@@ -9,6 +10,7 @@ alias colorpanes="/home/caprinux/Extra/color-scripts/color-scripts/panes"
 alias play="cd ~/Playground"
 alias ctf="cd ~/Desktop/CTF/"
 alias dev="cd ~/Code"
+alias bat='bat --paging=never'
 alias man="MANPAGER=\"sh -c 'col -bx | bat -l man -p'\" man"
 alias speedtest="python3 /home/caprinux/Extra/speedtest.py"
 
@@ -23,7 +25,7 @@ alias libcid='~/Tools/libc-database/identify'
 alias libcfind='~/Tools/libc-database/find'
 alias john='/home/caprinux/Tools/JohnTheRipper/run/john'
 alias gdb='gef'
-
+alias run='~/Desktop/CTF/Extra/qemu.py'
 # tools - reversing
 alias jadx='/home/caprinux/Tools/jadx/jadx-gui/build/install/jadx-gui/bin/jadx-gui'
 

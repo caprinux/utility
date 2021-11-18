@@ -38,30 +38,35 @@ if args.port == int:
 else:
     PORT = '12345'
 
-if arch == "MIPS":
-    LIB = '/usr/mipsel-linux-gnu'
-    if args.debug:
-        check_call(['remotinator', 'vsplit', '-x',
-                    f'gef {args.file[0]} -q \
-                    --eval-command=\'set solib-search-path {LIB}/lib/\' \
-                    --eval-command=\'set architecture {arch.lower()}\' \
-                    --eval-command=\'gef-remote --qemu-mode localhost:{PORT}\''])
-        check_call(['qemu-mipsel-static', '-L', LIB, '-g', PORT, args.file[0]])
-    else:
-        check_call(['qemu-mipsel-static', '-L', LIB, args.file[0]])
+try:
+    if arch == "MIPS":
+        LIB = '/usr/mipsel-linux-gnu'
+        if args.debug:
+            check_call(['remotinator', 'vsplit', '-x',
+                        f'gef {args.file[0]} -q \
+                        --eval-command=\'set solib-search-path {LIB}/lib/\' \
+                        --eval-command=\'set architecture {arch.lower()}\' \
+                        --eval-command=\'gef-remote --qemu-mode localhost:{PORT}\''])
+            check_call(['qemu-mipsel-static', '-L', LIB, '-g', PORT, args.file[0]])
+        else:
+            check_call(['qemu-mipsel-static', '-L', LIB, args.file[0]])
 
-elif arch == "ARM":
-    LIB = '/usr/arm-linux-gnueabi'
-    if args.debug:
-        check_call(['remotinator', 'vsplit', '-x',
-                    f'gef {args.file[0]} -q \
-                    --eval-command=\'set solib-search-path {LIB}/lib/\' \
-                    --eval-command=\'set architecture {arch.lower()}\' \
-                    --eval-command=\'gef-remote --qemu-mode localhost:{PORT}\''])
-        check_call(['qemu-arm-static', '-L', LIB, '-g', PORT, args.file[0]])
-    else:
-        check_call(['qemu-arm-static', '-L', LIB, args.file[0]])
+    elif arch == "ARM":
+        LIB = '/usr/arm-linux-gnueabi'
+        if args.debug:
+            check_call(['remotinator', 'vsplit', '-x',
+                        f'gef {args.file[0]} -q \
+                        --eval-command=\'set solib-search-path {LIB}/lib/\' \
+                        --eval-command=\'set architecture {arch.lower()}\' \
+                        --eval-command=\'gef-remote --qemu-mode localhost:{PORT}\''])
+            check_call(['qemu-arm-static', '-L', LIB, '-g', PORT, args.file[0]])
+        else:
+            check_call(['qemu-arm-static', '-L', LIB, args.file[0]])
 
-else:
-    print(f"{arch} is not supported yet.")
+    else:
+        print(f"{arch} is not supported yet.")
+        exit()
+
+except KeyboardInterrupt:
+    print("\nTerminated.")
     exit()

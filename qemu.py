@@ -16,6 +16,8 @@ class ArgumentParser(argparse.ArgumentParser):
 parser = ArgumentParser()
 parser.add_argument("-d", "--debug", help="connect gdb in split",
                     action="store_true")
+parser.add_argument("-p", "--port", help="specify remote gdb port",
+                    action="store_true")
 parser.add_argument('file', nargs=1)
 args = parser.parse_args()
 
@@ -31,14 +33,19 @@ if "ELF" not in elfinfo[0]:
     exit()
 
 arch = elfinfo[1]
-PORT = '12345'
-SOLIB = 'set solib-search-path'
+if args.port == int:
+    PORT = str(args.port)
+else:
+    PORT = '12345'
 
 if arch == "MIPS":
     LIB = '/usr/mipsel-linux-gnu'
     if args.debug:
         check_call(['remotinator', 'vsplit', '-x',
-                    f'gef {args.file[0]} -q --eval-command=\'target remote localhost:{PORT}\' --eval-command=\'{SOLIB} {LIB}/lib/\''])
+                    f'gef {args.file[0]} -q \
+                    --eval-command=\'set solib-search-path {LIB}/lib/\' \
+                    --eval-command=\'set architecture {arch.lower()}\' \
+                    --eval-command=\'gef-remote --qemu-mode localhost:{PORT}\''])
         check_call(['qemu-mipsel-static', '-L', LIB, '-g', PORT, args.file[0]])
     else:
         check_call(['qemu-mipsel-static', '-L', LIB, args.file[0]])
@@ -47,7 +54,10 @@ elif arch == "ARM":
     LIB = '/usr/arm-linux-gnueabi'
     if args.debug:
         check_call(['remotinator', 'vsplit', '-x',
-                    f'gef {args.file[0]} -q --eval-command=\'target remote localhost:{PORT}\' --eval-command=\'{SOLIB} {LIB}/lib/\''])
+                    f'gef {args.file[0]} -q \
+                    --eval-command=\'set solib-search-path {LIB}/lib/\' \
+                    --eval-command=\'set architecture {arch.lower()}\' \
+                    --eval-command=\'gef-remote --qemu-mode localhost:{PORT}\''])
         check_call(['qemu-arm-static', '-L', LIB, '-g', PORT, args.file[0]])
     else:
         check_call(['qemu-arm-static', '-L', LIB, args.file[0]])

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import sys
-from subprocess import check_call
+from subprocess import check_call, CalledProcessError
 import magic
 import os
 
@@ -69,4 +69,14 @@ try:
 
 except KeyboardInterrupt:
     print("\nTerminated.")
+    exit()
+
+#: \* For some reason, importing pwntools causes check_call to break, figure out why!! *\
+except CalledProcessError:
+
+    # if os.path.isfile('./core'):
+    #     core = Coredump('./core')
+    #     print(f"Crashed at {hex(core.fault_addr)}")
+    # check_call(['coredumpctl'])
+    print("\nProgram has crashed.")
     exit()
